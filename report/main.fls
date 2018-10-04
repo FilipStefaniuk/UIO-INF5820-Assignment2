@@ -362,6 +362,12 @@ INPUT ./simlex_oov_table_2.tex
 INPUT ./simlex_oov_table_2.tex
 INPUT ./analogies_table_2.tex
 INPUT ./analogies_table_2.tex
+INPUT ./classification_results.tex
+INPUT ./classification_results.tex
+INPUT ./best_avg.tex
+INPUT ./best_avg.tex
+INPUT ./best_std.tex
+INPUT ./best_std.tex
 INPUT main.aux
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/xcharter/xch_tuu2ww.enc
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc

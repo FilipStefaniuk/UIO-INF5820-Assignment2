@@ -18,8 +18,10 @@ from util import tag_convert
 from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 from keras.layers import BatchNormalization, Dropout
+from sklearn.utils.class_weight import compute_sample_weight
 import os
 import json
+import pickle
 
 if __name__ == '__main__':
 
@@ -29,6 +31,7 @@ if __name__ == '__main__':
     parser.add_argument('--outdir', default='./')
     # parser.add_argument('--maxlen', type=int, default=None)
     # parser.add_argument('--num_words', type=int, default=None)
+    parser.add_argument('--save', action='store_true', default=False)
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--pos', choices=['none', 'universal', 'ptb'], default='ptb')
     parser.add_argument('--test_size', type=float, default=0.1)
@@ -41,9 +44,9 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    MAX_LEN = None
-    NUM_WORDS = 15000
-    DEFAULT_EMB_SIZE = 300
+    MAX_LEN = 1000
+    NUM_WORDS = 3000
+    DEFAULT_EMB_SIZE = 100
 
     label_encoder = LabelEncoder()
     tokenizer = Tokenizer(NUM_WORDS, filters='\t\n', lower=False)
@@ -68,11 +71,13 @@ if __name__ == '__main__':
     tokenizer.fit_on_texts(x_data)
     x_data = tokenizer.texts_to_sequences(x_data)
     x_data = pad_sequences(x_data, maxlen=MAX_LEN)
+    # x_data = tokenizer.sequences_to_matrix(x_data, mode='binary')
 
     # num_words = args.num_words if args.num_words else len(tokenizer.word_index)
     max_len = MAX_LEN if MAX_LEN else x_data.shape[1]
     num_words = NUM_WORDS
     # max_len = MAX_LEN
+    logger.info("sequences padded to: %s" % max_len)
 
     x_train, x_test, y_train, y_test = train_test_split(
         x_data, y_data, test_size=args.test_size, random_state=args.seed)
@@ -86,21 +91,21 @@ if __name__ == '__main__':
         logger.info("done")
 
         logger.info("building keras embedding layer...")
-        embedding_matrix = np.zeros((num_words + 1, emb.wv.vector_size))
+        embedding_matrix = np.zeros((num_words + 1, emb_model.wv.vector_size))
         oov_count = 0
 
         for i in range(1, num_words + 1):
             word = tokenizer.index_word[i]
-            if word in emb.wv.vocab:
-                embedding_matrix[i] = emb.wv.get_vector(word)
+            if word in emb_model.wv.vocab:
+                embedding_matrix[i] = emb_model.wv.get_vector(word)
             else:
                 oov_count += 1
 
         if oov_count:
             logger.warn("%d words were not in model vocabulary", oov_count)
 
-        emb_layer = Embedding(num_words + 1, emb.wv.vector_size, input_length=max_len,
-                              weights=[embedding_matrix], trainable=False)
+        emb_layer = Embedding(num_words + 1, emb_model.wv.vector_size, input_length=max_len,
+                              weights=[embedding_matrix], trainable=True)
 
         logger.info("done")
 
@@ -109,9 +114,13 @@ if __name__ == '__main__':
         emb_layer = Embedding(num_words + 1, DEFAULT_EMB_SIZE, trainable=True, input_length=max_len)
 
     model = Sequential()
+    # model.add(InputLayer((NUM_WORDS,)))
     model.add(emb_layer)
     model.add(Lambda(lambda x: K.mean(x, axis=1)))
-    # model.add(Dense(256, activation='relu'))
+    model.add(Dense(256, activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(Dropout(0.3))
+    model.add(Dense(128, activation='relu'))
     # model.add(BatchNormalization())
     # model.add(Dropout(0.3))
     model.add(Dense(64, activation='relu'))
@@ -129,17 +138,29 @@ if __name__ == '__main__':
         EarlyStopping(patience=3)
     ]
 
-    model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_test, y_test), callbacks=callbacks)
+    # sample_weight = compute_sample_weight('balanced', y_train)
+
+    model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_test, y_test),
+              callbacks=callbacks)
 
     model.load_weights(tmp_model_path)
+    if os.path.exists(tmp_model_path):
+        os.remove(tmp_model_path)
+
+    if args.save:
+        with open(os.path.join(args.outdir, 'tokenizer.pkl'), "wb") as f:
+            pickle.dump(tokenizer, f)
+
+        model.save(os.path.join(args.outdir, 'model.h5'))
 
     logger.info("Finished training model")
+
     logger.info("Evaluating on developement set...")
-    y_true = np.argmax(data_y, axis=1)
+    y_true = np.argmax(y_test, axis=1)
     y_pred = np.argmax(model.predict(x_test), axis=1)
     logger.info("done")
 
-    labels = label_encoder.inverse_transform(np.unique(y_test))
+    labels = label_encoder.inverse_transform(np.unique(y_true))
     acc = accuracy_score(y_true, y_pred)
     prec, rec, f1, _ = precision_recall_fscore_support(y_true, y_pred)
     avg_prec, avg_rec, avg_f1, _ = precision_recall_fscore_support(y_true, y_pred, average='macro')
@@ -157,5 +178,5 @@ if __name__ == '__main__':
         "confusion_matrix": C.tolist()
     }
 
-    with open(os.path.join(args.outdir, 'metrics.json')) as f:
+    with open(os.path.join(args.outdir, 'metrics.json'), "w") as f:
         json.dump(metrics, f)

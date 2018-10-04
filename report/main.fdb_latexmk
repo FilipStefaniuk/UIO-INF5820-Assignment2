@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1538432327 "/home/filip/Documents/INF5820/INF5820-Assignment2/report/main.tex" "main.pdf" "main" 1538432327
-  "/home/filip/Documents/INF5820/INF5820-Assignment2/report/main.tex" 1538432326 19488 2be9f4d867a306c947da84c7a495cf95 ""
+["pdflatex"] 1538661369 "/home/filip/Documents/INF5820/INF5820-Assignment2/report/main.tex" "main.pdf" "main" 1538661369
+  "/home/filip/Documents/INF5820/INF5820-Assignment2/report/main.tex" 1538661368 11974 d2f9dad5948a37f1093d42eeee861fb7 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1480098666 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/xcharter/xch_q7u3cc.enc" 1509663637 3608 d4b77c790f9471e158b945b7021f3f80 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/xcharter/xch_tuu2ww.enc" 1509663637 3152 ae295da8277f5437c43ccc413c3e78ec ""
@@ -202,8 +202,11 @@
   "/usr/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1534822030 4231647 290ace4fcc85f3b26562490922d4fca6 ""
   "analogies_table_1.tex" 1538432121 907 57d6f270cabd80735d84339504441f06 ""
   "analogies_table_2.tex" 1538432157 673 ab8b539c40baa724cd6b80e775e30cc5 ""
-  "main.aux" 1538432327 1967 70300f63811fe83f79bd6f327515962f ""
-  "main.tex" 1538432326 19488 2be9f4d867a306c947da84c7a495cf95 ""
+  "best_avg.tex" 1538659931 824 ae28a4907c335a581b7033575f681b95 ""
+  "best_std.tex" 1538659931 824 3ffd9efdd1cdada127425ce6df6d2d35 ""
+  "classification_results.tex" 1538654230 1430 3203165c6935149b18da10083b457e84 ""
+  "main.aux" 1538661369 2490 78ce916f81cadc016d233611ecd9c522 ""
+  "main.tex" 1538661368 11974 d2f9dad5948a37f1093d42eeee861fb7 ""
   "similarities_classify.tex" 1538349323 579 a612b488a9674ee3d00cd833ed74ff38 ""
   "similarities_current.tex" 1538349359 514 4466b7fc0a0a8b26730fdd5d0e123bbd ""
   "simlex_oov_table_1.tex" 1538432190 404 4d917bde697837d8ab411cbc9304afcf ""

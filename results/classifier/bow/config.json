@@ -1,0 +1,27 @@
+{
+    "input_size": 3000,
+    "epochs": 15,
+    "early_stopping": true,
+    "test_size": 0,
+    "val_size": 0.1,
+    "patience": 3,
+    "mode": "binary",
+    "pos": true,
+    "weight_sample": false,
+    "layers": [
+        {
+            "type": "dense",
+            "units": 256,
+            "activation": "relu"
+        },
+        {
+            "type": "dense",
+            "units": 128,
+            "activation": "relu"
+        },
+        {
+            "type": "dense",
+            "units": 64
+        }
+    ]
+}
