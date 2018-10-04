@@ -1,0 +1,224 @@
+[
+    {
+        "similar_words": [
+            "approximately_ADV",
+            "completely_ADV",
+            "well-nigh_ADJ",
+            "probably_ADV",
+            "ago_ADV"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.4449149966239929,
+            0.4409602880477905,
+            0.4380987882614136,
+            0.43346160650253296,
+            0.42444169521331787
+        ],
+        "word": "almost_ADV"
+    },
+    {
+        "similar_words": [
+            "latest_ADJ",
+            "overall_ADJ",
+            "original_ADJ",
+            "outgoing_ADJ",
+            "existing_ADJ"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.40534651279449463,
+            0.4021810293197632,
+            0.4014129042625427,
+            0.4008009433746338,
+            0.3973086178302765
+        ],
+        "word": "current_ADJ"
+    },
+    {
+        "similar_words": [
+            "reliant_NOUN",
+            "over-consumption_NOUN",
+            "reliant_ADJ",
+            "alienation_NOUN",
+            "overreliance_NOUN"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.4445875883102417,
+            0.4346233606338501,
+            0.4211041331291199,
+            0.4203619658946991,
+            0.42027807235717773
+        ],
+        "word": "dependency_NOUN"
+    },
+    {
+        "similar_words": [],
+        "similar_idx": [],
+        "similar_scores": [],
+        "word": "parser_NOUN"
+    },
+    {
+        "similar_words": [
+            "redacted_ADJ",
+            "iv2_NOUN",
+            "unredacted_ADJ",
+            "nonpublic_ADJ",
+            "declassify_VERB"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.45143264532089233,
+            0.4467378854751587,
+            0.4412875473499298,
+            0.4409085512161255,
+            0.4353944659233093
+        ],
+        "word": "classify_VERB"
+    },
+    {
+        "similar_words": [
+            "include_VERB",
+            "cite_VERB",
+            "incorporate_VERB",
+            "Riverwoods_PROPN",
+            "extrapolation_NOUN"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.40647825598716736,
+            0.4061586558818817,
+            0.4046139717102051,
+            0.39932772517204285,
+            0.39830639958381653
+        ],
+        "word": "base_VERB"
+    },
+    {
+        "similar_words": [
+            "700,000_NUM",
+            "milion_NOUN",
+            "500,000_NUM",
+            "350,000_NUM",
+            "400,000_NUM"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.6364501714706421,
+            0.6338279247283936,
+            0.6329130530357361,
+            0.6183865666389465,
+            0.6111242175102234
+        ],
+        "word": "million_NUM"
+    },
+    {
+        "similar_words": [
+            "scattered_ADJ",
+            "smattering_NOUN",
+            "meager_ADJ",
+            "paucity_NOUN",
+            "disjointed_ADJ"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.4630706310272217,
+            0.46163690090179443,
+            0.46066635847091675,
+            0.45918008685112,
+            0.4588638246059418
+        ],
+        "word": "sparse_ADJ"
+    },
+    {
+        "similar_words": [
+            "Conference::Board_PROPN",
+            "Indicators_PROPN",
+            "coincident_ADJ",
+            "non-manufacturing_ADJ",
+            "NTC::Research_PROPN"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.47292560338974,
+            0.47188496589660645,
+            0.4648115038871765,
+            0.4626101851463318,
+            0.4585435688495636
+        ],
+        "word": "indicator_NOUN"
+    },
+    {
+        "similar_words": [
+            "SHOPPING-GUIDE_PROPN",
+            "dvd-releases_NOUN",
+            "on-language_NOUN",
+            "bc-fbn-bucs_NOUN",
+            "bc-cpt-computer-column_NOUN"
+        ],
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "similar_scores": [
+            0.4796396791934967,
+            0.47757744789123535,
+            0.4652819037437439,
+            0.4630841612815857,
+            0.4617146849632263
+        ],
+        "word": "feature_NOUN"
+    }
+]

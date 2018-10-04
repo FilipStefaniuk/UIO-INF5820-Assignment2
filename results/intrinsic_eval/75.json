@@ -1,0 +1,72 @@
+{
+    "simlex": {
+        "noun": {
+            "spearman": [
+                0.24635977071347576,
+                1.6512851132640126e-9
+            ],
+            "oov_ratio": 12.462462462462462,
+            "pearson": [
+                0.2634712954043207,
+                1.0299250272267205e-10
+            ]
+        },
+        "total": {
+            "spearman": [
+                0.25453700604232815,
+                2.787823030068441e-13
+            ],
+            "oov_ratio": 20.02002002002002,
+            "pearson": [
+                0.2682994965219757,
+                1.220242148761231e-14
+            ]
+        },
+        "verb": {
+            "spearman": [
+                0.13782496216835866,
+                0.09148584627886532
+            ],
+            "oov_ratio": 31.98198198198198,
+            "pearson": [
+                0.18669117854813855,
+                0.02171857893208716
+            ]
+        },
+        "adj": {
+            "spearman": [
+                0.4896340015217177,
+                0.00003481992840237483
+            ],
+            "oov_ratio": 41.44144144144144,
+            "pearson": [
+                0.40506512780344517,
+                0.000816684493320751
+            ]
+        }
+    },
+    "analogies": {
+        "sections": [
+            "capital-common-countries",
+            "capital-world",
+            "currency",
+            "city-in-state",
+            "family",
+            "gram1-adjective-to-adverb",
+            "gram2-opposite",
+            "gram6-nationality-adjective",
+            "Total accuracy"
+        ],
+        "scores": {
+            "gram1-adjective-to-adverb": 0.1738095238095238,
+            "currency": 0,
+            "gram2-opposite": 0.15833333333333333,
+            "capital-common-countries": 0.1774891774891775,
+            "gram6-nationality-adjective": 0.47928994082840237,
+            "family": 0,
+            "capital-world": 0.08412162162162162,
+            "Total accuracy": 0.15317809943360605,
+            "city-in-state": 0.022504892367906065
+        }
+    }
+}

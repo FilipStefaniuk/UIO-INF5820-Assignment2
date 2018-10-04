@@ -1,0 +1,72 @@
+{
+    "simlex": {
+        "verb": {
+            "spearman": [
+                0.1355200491885911,
+                0.04416521863497061
+            ],
+            "oov_ratio": 0.45045045045045046,
+            "pearson": [
+                0.157277732180739,
+                0.019313659164836593
+            ]
+        },
+        "adj": {
+            "spearman": [
+                0.581910406632675,
+                2.1116880708933382e-11
+            ],
+            "oov_ratio": 0,
+            "pearson": [
+                0.5707338136293113,
+                6.155085633674834e-11
+            ]
+        },
+        "total": {
+            "spearman": [
+                0.37002000558658366,
+                9.693958985022473e-34
+            ],
+            "oov_ratio": 0.10010010010010009,
+            "pearson": [
+                0.3989170265285178,
+                2.0572513777123002e-39
+            ]
+        },
+        "noun": {
+            "spearman": [
+                0.40517182743917785,
+                1.0567056746861293e-27
+            ],
+            "oov_ratio": 0,
+            "pearson": [
+                0.43492555543787287,
+                4.130076911190534e-32
+            ]
+        }
+    },
+    "analogies": {
+        "scores": {
+            "gram2-opposite": 0.3472906403940887,
+            "city-in-state": 0.6976084312930685,
+            "gram1-adjective-to-adverb": 0.35786290322580644,
+            "gram6-nationality-adjective": 0.8936835522201376,
+            "Total accuracy": 0.7402295027440545,
+            "capital-world": 0.9068825910931174,
+            "capital-common-countries": 0.9169960474308301,
+            "family": 0.9387351778656127,
+            "currency": 0.20630372492836677
+        },
+        "sections": [
+            "capital-common-countries",
+            "capital-world",
+            "currency",
+            "city-in-state",
+            "family",
+            "gram1-adjective-to-adverb",
+            "gram2-opposite",
+            "gram6-nationality-adjective",
+            "Total accuracy"
+        ]
+    }
+}

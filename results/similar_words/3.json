@@ -1,0 +1,242 @@
+[
+    {
+        "similar_scores": [
+            0.47531455755233765,
+            0.4707275927066803,
+            0.4686816930770874,
+            0.46702659130096436,
+            0.46684983372688293
+        ],
+        "similar_words": [
+            "half_DET",
+            "utterly_ADV",
+            "mostly_ADV",
+            "except_ADP",
+            "three-quarter_NOUN"
+        ],
+        "word": "almost_ADV",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.44389235973358154,
+            0.43980082869529724,
+            0.4378765821456909,
+            0.43389663100242615,
+            0.42711693048477173
+        ],
+        "similar_words": [
+            "2008-2011_NUM",
+            "2011-2013_NUM",
+            "past_ADJ",
+            "change_VERB",
+            "2014-2017_NUM"
+        ],
+        "word": "current_ADJ",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.4216841161251068,
+            0.4213109612464905,
+            0.42031383514404297,
+            0.41637298464775085,
+            0.4160979390144348
+        ],
+        "similar_words": [
+            "partitioning_NOUN",
+            "multivalued_ADJ",
+            "associated_ADJ",
+            "Dependencies_PROPN",
+            "partition_VERB"
+        ],
+        "word": "dependency_NOUN",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.6406697034835815,
+            0.6364303827285767,
+            0.6294405460357666,
+            0.6271536350250244,
+            0.6247392892837524
+        ],
+        "similar_words": [
+            "ocaml_NOUN",
+            "XSLT_PROPN",
+            "xml_NOUN",
+            "yaml_NOUN",
+            "bytecode_NOUN"
+        ],
+        "word": "parser_NOUN",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.5029674768447876,
+            0.4987735152244568,
+            0.4981901943683624,
+            0.48970770835876465,
+            0.4842669367790222
+        ],
+        "similar_words": [
+            "reclassification_NOUN",
+            "classified_ADJ",
+            "group_VERB",
+            "sub-type_NOUN",
+            "label_VERB"
+        ],
+        "word": "classify_VERB",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.41306188702583313,
+            0.409849613904953,
+            0.40884125232696533,
+            0.4049643576145172,
+            0.40365684032440186
+        ],
+        "similar_words": [
+            "69/100_NUM",
+            "originate_VERB",
+            "model_VERB",
+            "similar_ADJ",
+            "reflect_VERB"
+        ],
+        "word": "base_VERB",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.7610675692558289,
+            0.7590094804763794,
+            0.7578227519989014,
+            0.751350998878479,
+            0.7485415935516357
+        ],
+        "similar_words": [
+            "950,000_NUM",
+            "300,000_NUM",
+            "850,000_NUM",
+            "350,000_NUM",
+            "250,000_NUM"
+        ],
+        "word": "million_NUM",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.5060619115829468,
+            0.5032166242599487,
+            0.502869188785553,
+            0.49920958280563354,
+            0.4982444643974304
+        ],
+        "similar_words": [
+            "fuzzy_ADJ",
+            "luxuriant_ADJ",
+            "coarse_ADJ",
+            "brushy_NOUN",
+            "abundant_ADJ"
+        ],
+        "word": "sparse_ADJ",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.4982234835624695,
+            0.491864949464798,
+            0.4914456903934479,
+            0.49020397663116455,
+            0.4880337417125702
+        ],
+        "similar_words": [
+            "variometer_NOUN",
+            "determinant_NOUN",
+            "monitoring_NOUN",
+            "metric_NOUN",
+            "ammeter_NOUN"
+        ],
+        "word": "indicator_NOUN",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    },
+    {
+        "similar_scores": [
+            0.4364018440246582,
+            0.4360307455062866,
+            0.4359598159790039,
+            0.4341839849948883,
+            0.4301983714103699
+        ],
+        "similar_words": [
+            "wrap-around_ADJ",
+            "unique_ADJ",
+            "peculiarity_NOUN",
+            "wraparound_NOUN",
+            "distinctive_ADJ"
+        ],
+        "word": "feature_NOUN",
+        "similar_idx": [
+            11,
+            12,
+            13,
+            14,
+            15
+        ]
+    }
+]

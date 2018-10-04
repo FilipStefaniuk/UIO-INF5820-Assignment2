@@ -1,0 +1,10 @@
+almost_ADV
+current_ADJ
+dependency_NOUN
+parser_NOUN
+classify_NOUN
+based_VERB
+million_NUM
+sparse_ADJ
+indicator_NOUN
+feature_NOUN

@@ -22,7 +22,10 @@
 
 \documentclass{article}
 
+	
 \input{structure.tex} % Include the file specifying the document structure and custom commands
+\usepackage{listings}
+\usepackage{booktabs}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -43,21 +46,176 @@
 %----------------------------------------------------------------------------------------
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
+\section*{Introduction}
+This assignment had four different parts, each is described in detail in separate section of this report.
+To solve the problems I have implemented a number of scripts:
+\begin{itemize}
+	\item \lstinline{similar_wv.py} - finds nearest neighbours of the list of given words
+	\item \lstinline{eval_wv_intinsic.py} - evaluates models on intrinsic evaluation datasets
+	\item \lstinline{train_word2vec.py} - trains word embeddings model
+	\item \lstinline{train_model.py} - trains neural network model for calssifying texts
+	\item \lstinline{eval_on_test.py} - evaluates model on test data
+\end{itemize}
+Every script has interface with support of \lstinline{--help} command, that shortly explains script and
+other command line arguments. Most of the results are saved in json files. The code snippets to
+preprocess the data and process the results are in notebooks. Scripts, notebooks, results and
+latex source for this report are available in github repository.
+\section{Basic operations with word embeddings}
 
-% \section*{1. Basic operations with word embeddings} % Unnumbered section
+For this part of the assignment, I have used script \lstinline{play_with_model.py} which I
+have slightly modified, to allow me specifiy the range of indexes of the nearest words.
 
-% Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor arcu luctus, imperdiet urna iaculis, mattis eros. Pellentesque iaculis odio vel nisl ullamcorper, nec faucibus ipsum molestie. Sed dictum nisl non aliquet porttitor. Etiam vulputate arcu dignissim, finibus sem et, viverra nisl. Aenean luctus congue massa, ut laoreet metus ornare in. Nunc fermentum nisi imperdiet lectus tincidunt vestibulum at ac elit. Nulla mattis nisl eu malesuada suscipit.
+To produce input file, I copied the first sentence from Chen and Manning paper, and used
+nltk to lemmatize, tag and remove stop words from that sentence. Results are saved in the file
+\lstinline{data/words_auto.txt}. Unfortunately not everything was done correctly, namely one
+word was badly lemmatized and one had wrong POS tag. I manually
+corrected the mistakes and saved it as \lstinline{data/words.txt}.
 
-% Math equation/formula
-% \begin{equation}
-% 	I = \int_{a}^{b} f(x) \; \text{d}x.
-% \end{equation}
+Finally I run the script using 2 different word models \textit{Wikipedia} and \textit{Gigaword}. I saved
+the results in \lstinline{results/similar_words/}. Some of the words are presented in the tables below:
 
-% Aliquam arcu turpis, ultrices sed luctus ac, vehicula id metus. Morbi eu feugiat velit, et tempus augue. Proin ac mattis tortor. Donec tincidunt, ante rhoncus luctus semper, arcu lorem lobortis justo, nec convallis ante quam quis lectus. Aenean tincidunt sodales massa, et hendrerit tellus mattis ac. Sed non pretium nibh. Donec cursus maximus luctus. Vivamus lobortis eros et massa porta porttitor.
+\begin{figure}[h]	
+	\begin{center}
+		\textbf{Top Words: classify\_VERB} \par \medskip
+		\scalebox{1}{\input{./similarities_classify.tex}}
+		\caption{11th to 15th nearest neighbours for word 'classify', with corresponding scores.}
+	\end{center}
+\end{figure}
 
-% \begin{info} % Information block
-% 	This is an interesting piece of information, to which the reader should pay special attention. Fusce varius orci ac magna dapibus porttitor. In tempor leo a neque bibendum sollicitudin. Nulla pretium fermentum nisi, eget sodales magna facilisis eu. Praesent aliquet nulla ut bibendum lacinia. Donec vel mauris vulputate, commodo ligula ut, egestas orci. Suspendisse commodo odio sed hendrerit lobortis. Donec finibus eros erat, vel ornare enim mattis et.
-% \end{info}
+\begin{figure}[h]	
+	\begin{center}
+		\textbf{Top Words: current\_ADJ} \par \medskip
+		\scalebox{1}{\input{./similarities_current.tex}}
+		\caption{11th to 15th nearest neighbours for word 'current', with corresponding scores.}
+	\end{center}
+\end{figure}
+
+It looks like \textit{Wikipedia} model captures the meaning of 'classify' quite well with the
+similar words like 'group' or 'label'. Moreover, becouse the words presented above 
+are not the closest neighbours it is also interesting to see that the other meaning of 'classify' was captured with the words such as 'nonpublic' and 'classified'.
+With word 'current' another phenomena occures, while in \textit{Gigaword} we can see words with quite similar meanining,
+in \textit{Wikipedia} we observe the dates! This is not wrong, since when talking about \textit{current} events, we often
+think about last days or years, but this example illustrates that with anomalies like this one it is difficult to train models, that
+will stay valid for a longer period of time.
+
+\section{Intrinsic evaluation of pre-trained word embeddings}
+I have downloaded both \textbf{SimLex999} and \textbf{Google Analogies} datasets,
+and I evaluated on them three different models of word embeddings. I have used builtin gensim
+methods \lstinline{evaluate_word_pairs()} and \lstinline{evaluate_word_analogies()}.
+
+\subsection{SimLex999}
+I fund out that, the simplest way to split \textbf{SimLex999} into sections, was to simply split
+dataset into separate files. Because there were no clear separators between sections I have checked
+the original paper and discovered, that the dataset is structured in the way that the first 111 word pairs
+are adjectives next 666 are nouns, and the last 222 are verbs. I split the dataset accordingly.
+
+\begin{figure}[h]
+	\centering
+	\input{./simlex_table_1.tex}
+	\caption{Pearson correlation on SimLex999 dataset.}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\input{./simlex_oov_table_1.tex}
+	\caption{Ratio of OOV words (\%).}
+\end{figure}
+
+From the evaluation results we can observe that comparing verb pairs is the most difficult.
+It is very interesting, since the authors of the \textbf{Simlex999} mentioned in their work,
+that when testing word pairs with children, they also had the most difficulty with the verbs.
+It is also worth mentioning that even though the second model (trained on Oil and Gas data)
+achieved better correlation on verbs than the other two, 30\% of the words were not in the vocabulary.
+
+\subsection{Google Analogies}
+Gensim methods for evaluation are not very flexible, and with word analogies
+there was no simple method to extract the information about oov tokens, that was logged but not
+returned as a result from function. I present the results of the evaluation below, but
+I want to emphesise that in case of the second model 35\% of words were not in vocabulary.
+
+\begin{figure}[h]
+	\centering
+	\input{./analogies_table_1.tex}
+	\caption{Accuracy scores, evaluation on Google Analogies dataset.}
+\end{figure}
+
+
+\subsection{Analysis}
+On both test sets the clear winner is the model trained on \textit{Common Crawl}. There is a
+simple explanation for that fact, this model was trained on the largest number of data which really
+matters in case of word embeddings. 
+
+\section{ Training a word embedding model on in-domain data}
+I have trained two models using \lstinline{train_word2vec.py}, the models were trained
+with skipGram algorithm, window size of 2 and vector sizes of \textbf{300} (model1) and \textbf{100} (model2).
+Both models were trained for 2 iterations.
+
+\subsection{Top most frequent words}
+I have compared the most frequent words from models trained on \textit{SignalMedia},
+\textit{CoNLL17}, \textit{Oil and Gas} and \textit{Common Crawl}. The most common words in models trained on large corporas are either interpunction signs
+or stop words. The explanation is that the large amount of data is more difficult to process
+and the quality of it drops. The models achieve good results because the amount of data
+compensates its quality. In report I include only 10 most common but file \lstinline{results/top_words.csv}
+contains all 20.
+
+
+\begin{figure}
+	\centering
+	\scalebox{0.92}{\input{./top_words.tex}}
+	\caption{Most common words in models}
+\end{figure}
+
+\clearpage
+
+\subsection{Intrinsic Evaluation}
+I have evaluated both models in the same manner as the models in the previous section:
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+	\input{./simlex_table_2.tex}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+	\centering
+	\input{./simlex_oov_table_2.tex}
+	\end{minipage}
+	\caption{Pearson correlation and percentage of OOV words on SimLex999 dataset.}
+\end{figure}
+
+Interestingly correlation on nouns were as good as in \textit{Common Crawl} model, even
+though this model was trained on very little data. The total correlation is not really comparable,
+since 90\% of verbs, which loweres the result were out of vocabulary. Comparing two models trained
+on in-domain data it can be seen that increasing vector size improves the results.
+
+\begin{figure}[h]
+	\centering
+	\input{./analogies_table_2.tex}
+	\caption{Accuracy scores, evaluation on Google Analogies dataset.}
+\end{figure}
+
+It is hard to get useful information from evaluating the models on analogies dataset,
+since almost all the classes contained words that were not in the vocabulary of this models.
+The only meaningful result was from evaluating on \textit{family} section, on which model performes
+worse than pre-trained embeddings. The reason for that is that the domain on which the model was 
+trained is much different from the categories in this dataset.
+
+\section{Document classification with word embeddings}
+% \begin{figure}[h]
+	% \centering
+% \input{./similarities_classify.tex}
+% \end{figure}
+
+% \begin{figure}[h]
+% 	\centering
+% 	\begin{minipage}{0.4\textwidth}
+%         \centering
+% 		\input{./similarities_classify.tex}
+% 		\caption{No POS tags.}
+% 	\end{minipage}
+	% \begin{minipage}{0.4\textwidth}
+    %     \centering
+	% 	\input{./similarities_current.tex}
+	% 	\caption{With POS tags.}
+	% \end{minipage}
+% \end{figure}
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 1
