@@ -1,93 +1,71 @@
+import pickle
+import argparse
+import logging
+import json
 import sys
 import numpy as np
 import pandas as pd
 from keras.models import load_model
 from keras.utils import to_categorical
-from sklearn.metrics import classification_report
-from sklearn.metrics import precision_recall_fscore_support
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import accuracy_score, confusion_matrix
-import pickle
-import argparse
+from util import get_metrics
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('model')
-    parser.add_argument('tokenizer')
-    parser.add_argument('test_data')
+    MAX_LEN = 1000
+
+    parser = argparse.ArgumentParser(description="""
+    Script that loads model and it's tokenizer,
+    and evaluates it on training data.
+    Computes precision recall and f1 both per class and macro average.
+    Saves the computed metrics to the file or prints to the stdout.
+    """)
+    parser.add_argument('model', help='classifier model')
+    parser.add_argument('tokenizer', help='tokenizer used with model')
+    parser.add_argument('test_data', help='data to test on')
+    parser.add_argument('--output_file', help='file where to save the results')
 
     args = parser.parse_args()
 
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    # Load the model,
+    # and the corresponding tokenizer.
+    logging.info("loading model...")
     with open(args.tokenizer, 'rb') as f:
         tokenizer = pickle.load(f)
 
     model = load_model(args.model)
+    logging.info("done")
     print(model.summary())
 
-    label_encoder = LabelEncoder()
-    print('Loading the test set...')
+    # Load and preprocess dataset
+    logging.info("loading and preprocessing dataset...")
     test_dataset = pd.read_csv(args.test_data, sep='\t', compression="gzip")
-    print('Finished loading the test set')
+    label_encoder = LabelEncoder()
 
     (x_test, y_test) = test_dataset['text'], test_dataset['source']
-
-    print(len(x_test), 'test texts')
-
-    # print('Average test text length: {0:.{1}f} words'.format(np.mean(list(map(len, x_test.str.split()))), 1))
 
     y_test = label_encoder.fit_transform(y_test)
     y_test = to_categorical(y_test)
 
-    # classes = sorted(list(set(y_test)))
-    # num_classes = len(classes)
-    # print(num_classes, 'classes')
-
-    # print('===========================')
-    # print('Class distribution in the testing data:')
-    # print(test_dataset.groupby('source').count())
-    # print('===========================')
-
-    # We can remove PoS tags if we think we don't need them:
-    # x_test = [' '.join([word.split('_')[0] for word in text.split()]) for text in x_test]
-
     x_test = tokenizer.texts_to_sequences(x_test)
-    x_test = pad_sequences(x_test, maxlen=1000)
-    # print('Vectorizing text data...')
-    # tokenized_test = tokenizer.texts_to_matrix(x_test, mode='binary')  # Count or binary BOW?
-    # print('Test data shape:', tokenized_test.shape)
+    x_test = pad_sequences(x_test, maxlen=MAX_LEN)
+    logging.info("done")
 
-    # Converting text labels to indexes
-    # y_test = [classes.index(i) for i in y_test]
-
-    # Convert indexes to binary class matrix (for use with categorical_crossentropy loss)
-    # y_test = to_categorical(y_test, num_classes)
-    # print('Test labels shape:', y_test.shape)
-
-    print('===========================')
-    print('Evaluation:')
-    print('===========================')
-
+    # Evaluate model on test set
+    logging.info("evaluating model...")
     y_true = np.argmax(y_test, axis=1)
     y_pred = np.argmax(model.predict(x_test), axis=1)
 
-    labels = label_encoder.inverse_transform(np.unique(y_true))
-    acc = accuracy_score(y_true, y_pred)
-    prec, rec, f1, _ = precision_recall_fscore_support(y_true, y_pred)
-    avg_prec, avg_rec, avg_f1, _ = precision_recall_fscore_support(y_true, y_pred, average='macro')
-    C = confusion_matrix(y_true, y_pred)
+    metrics = get_metrics(y_pred, y_true)
+    metrics['labels'] = label_encoder.inverse_transform(np.unique(y_true)).tolist()
+    logging.info("done")
 
-    metrics = {
-        "labels": labels.tolist(),
-        "accuracy": acc,
-        "precision": prec.tolist(),
-        "recall": rec.tolist(),
-        "f1": f1.tolist(),
-        "avg_precision": avg_prec,
-        "avg_recall": avg_rec,
-        "avg_f1": avg_f1,
-        "confusion_matrix": C.tolist()
-    }
-
-    print(metrics)
+    if args.output_file:
+        with open(args.output_file, "w") as f:
+            json.dump(metrics, f)
+    else:
+        print(metrics)

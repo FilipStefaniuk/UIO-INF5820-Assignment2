@@ -1,8 +1,11 @@
+import os
+import json
+import pickle
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.utils import to_categorical
-from util import load_model
+from util import load_model, get_metrics
 from keras.models import Sequential
 from keras.layers.embeddings import Embedding
 from keras.layers import Dense
@@ -19,23 +22,20 @@ from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 from keras.layers import BatchNormalization, Dropout
 from sklearn.utils.class_weight import compute_sample_weight
-import os
-import json
-import pickle
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="""
+        Trains the classifier.
+    """)
 
-    parser.add_argument('--emb', default=None)
-    parser.add_argument('--outdir', default='./')
-    # parser.add_argument('--maxlen', type=int, default=None)
-    # parser.add_argument('--num_words', type=int, default=None)
-    parser.add_argument('--save', action='store_true', default=False)
-    parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--pos', choices=['none', 'universal', 'ptb'], default='ptb')
-    parser.add_argument('--test_size', type=float, default=0.1)
-    parser.add_argument('--seed', type=int, default=123)
+    parser.add_argument('--emb', default=None, help="embeddings model to use, if not provided embeddings are trained")
+    parser.add_argument('--outdir', default='./', help="where to output metrics, logs and save the model")
+    parser.add_argument('--save', action='store_true', default=False, help="wether to save the model")
+    parser.add_argument('--epochs', type=int, default=10, help="number of epochs")
+    parser.add_argument('--pos', choices=['none', 'universal', 'ptb'], default='ptb', help="which tags to use")
+    parser.add_argument('--test_size', type=float, default=0.1, help="size of validation set")
+    parser.add_argument('--seed', type=int, default=123, help="seed for random shuffling")
 
     args = parser.parse_args()
 
@@ -105,7 +105,9 @@ if __name__ == '__main__':
             logger.warn("%d words were not in model vocabulary", oov_count)
 
         emb_layer = Embedding(num_words + 1, emb_model.wv.vector_size, input_length=max_len,
-                              weights=[embedding_matrix], trainable=True)
+                              weights=[embedding_matrix], trainable=False)
+        # emb_layer = Embedding(num_words + 1, emb_model.wv.vector_size, input_length=max_len,
+        #                 weights=[embedding_matrix], trainable=True)
 
         logger.info("done")
 
@@ -114,7 +116,6 @@ if __name__ == '__main__':
         emb_layer = Embedding(num_words + 1, DEFAULT_EMB_SIZE, trainable=True, input_length=max_len)
 
     model = Sequential()
-    # model.add(InputLayer((NUM_WORDS,)))
     model.add(emb_layer)
     model.add(Lambda(lambda x: K.mean(x, axis=1)))
     model.add(Dense(256, activation='relu'))
@@ -160,23 +161,8 @@ if __name__ == '__main__':
     y_pred = np.argmax(model.predict(x_test), axis=1)
     logger.info("done")
 
-    labels = label_encoder.inverse_transform(np.unique(y_true))
-    acc = accuracy_score(y_true, y_pred)
-    prec, rec, f1, _ = precision_recall_fscore_support(y_true, y_pred)
-    avg_prec, avg_rec, avg_f1, _ = precision_recall_fscore_support(y_true, y_pred, average='macro')
-    C = confusion_matrix(y_true, y_pred)
-
-    metrics = {
-        "labels": labels.tolist(),
-        "accuracy": acc,
-        "precision": prec.tolist(),
-        "recall": rec.tolist(),
-        "f1": f1.tolist(),
-        "avg_precision": avg_prec,
-        "avg_recall": avg_rec,
-        "avg_f1": avg_f1,
-        "confusion_matrix": C.tolist()
-    }
+    metrics = get_metrics(y_pred, y_true)
+    metrics['labels'] = label_encoder.inverse_transform(np.unique(y_true)).tolist()
 
     with open(os.path.join(args.outdir, 'metrics.json'), "w") as f:
         json.dump(metrics, f)

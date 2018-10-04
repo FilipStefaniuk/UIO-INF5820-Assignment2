@@ -76,7 +76,11 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="""
+    Evaluates embeddings model on intrinsic evaluation datasets:
+    - SimLex
+    - Google Analogies
+    """)
     parser.add_argument('emb_file', help="file with word embeddings")
     parser.add_argument('out_file', help="output file")
     parser.add_argument('--pos', type=bool, default=False, help="wether to use data with POS tags")

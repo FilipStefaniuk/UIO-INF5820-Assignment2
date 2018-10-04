@@ -1,16 +1,14 @@
-#! python
-# coding: utf-8
-
 import gensim
 import logging
 import multiprocessing
 import argparse
 import os
 
-# This script trains a word2vec word embedding models using Gensim
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="""
+        Trains the word embedding model.
+    """)
     parser.add_argument('corpus', help='Path to a training corpus')
     parser.add_argument('out', help='Output file where to save model')
     parser.add_argument('--cores', default=False, help='Limit on the number of cores to use')
@@ -37,8 +35,6 @@ if __name__ == '__main__':
 
     model = gensim.models.Word2Vec(data, size=args.vectorsize, window=args.window, workers=cores, sg=args.sg,
                                    max_final_vocab=args.vocabsize, iter=args.iterations, sample=0)
-
-    # print(model.wv.index2word[:10])
 
     logger.info("Saving the model to '%s'...")
     model.wv.save_word2vec_format(args.out, binary=False)

@@ -3,6 +3,8 @@ import zipfile
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from keras.utils import to_categorical
 
 conversion_table = {
@@ -80,3 +82,23 @@ def load_model(embeddings_file):
 def tag_convert(token):
     """Converts tag from PTB tagset to Universal tagset"""
     return conversion_table.get(token, '')
+
+
+def get_metrics(y_pred, y_true):
+    """Computes metrics with given predictions and gold labels."""
+
+    acc = accuracy_score(y_true, y_pred)
+    prec, rec, f1, _ = precision_recall_fscore_support(y_true, y_pred)
+    avg_prec, avg_rec, avg_f1, _ = precision_recall_fscore_support(y_true, y_pred, average='macro')
+    C = confusion_matrix(y_true, y_pred)
+
+    return {
+        "accuracy": acc,
+        "precision": prec.tolist(),
+        "recall": rec.tolist(),
+        "f1": f1.tolist(),
+        "avg_precision": avg_prec,
+        "avg_recall": avg_rec,
+        "avg_f1": avg_f1,
+        "confusion_matrix": C.tolist()
+    }

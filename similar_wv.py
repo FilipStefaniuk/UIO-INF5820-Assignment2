@@ -11,7 +11,9 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="""
+    Finds the similar words in embedding model.
+    """)
     parser.add_argument('emb_file', help="file with word embeddings")
     parser.add_argument('words_file', help="file with words queries")
     parser.add_argument('--output_file', help="file where to save output")
