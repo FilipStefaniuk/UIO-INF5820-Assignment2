@@ -26,6 +26,7 @@
 \input{structure.tex} % Include the file specifying the document structure and custom commands
 \usepackage{listings}
 \usepackage{booktabs}
+\usepackage{hyperref}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -59,7 +60,7 @@ To solve the problems I have implemented a number of scripts:
 Every script has interface with support of \lstinline{--help} command, that shortly explains script and
 other command line arguments. Most of the results are saved in json files. The code snippets to
 preprocess the data and process the results are in notebooks. Scripts, notebooks, results and
-latex source for this report are available in github repository.
+latex source for this report are available in github repository\footnote{\href{https://github.uio.no/filipste/INF5820-Assignment2}{https://github.uio.no/filipste/INF5820-Assignment2}}.
 \section{Basic operations with word embeddings}
 
 For this part of the assignment, I have used script \lstinline{play_with_model.py} which I
@@ -141,7 +142,7 @@ I want to emphesise that in case of the second model 35\% of words were not in v
 
 \subsection{Analysis}
 On both test sets the clear winner is the model trained on \textit{Common Crawl}. There is a
-simple explanation for that fact, this model was trained on the largest number of data which really
+simple explanation of that fact, this model was trained on the largest number of data which really
 matters in case of word embeddings. 
 
 \section{ Training a word embedding model on in-domain data}
@@ -205,10 +206,10 @@ After couple of experiments, I have ended up with the feed forward network with
 3 hidden layers of 256, 128 and 64 neurons. I have used Adam optimizer and
 categorical crossentropy loss function. I have tokenized a teksts, used only 3000 most
 common words. I decided that using all the words would provide unnecessairy noise
-when trainig embeddings. When using pretrained models most of these words
+when using trained embeddings, and when using pretrained models most of these words
 weren't in the dictionairy either way. Then I padded the sequences
-to 1000. I have build embedding manually layer, gensim function since it is not
-compatible with keras \lstinline{pad_sequences}.
+to 1000. I have build embedding layer manually, not using gensim function since it is not
+compatible with keras \lstinline{pad_sequences}\footnote{\href{https://github.com/RaRe-Technologies/gensim/issues/1900}{https://github.com/RaRe-Technologies/gensim/issues/1900}}.
 
 I have tested the model with all the available embeddings but in most cases
 results were bad. I believe this is due to the fact that articles are long, and
@@ -219,7 +220,7 @@ semantical information they are very difficult to distinguish. Maybe that is the
 why model with BOW had better results that the ones with word embeddings.
 
 The best performing models that use embeddings were the one with trained embeddings during
-classification task and the one trained on Signal Dataset. I have tried training different
+classification task and the one trained on Signal Dataset. I have also tried training different
 embedding model with wider window but it didn't improve the results. 
 
 
